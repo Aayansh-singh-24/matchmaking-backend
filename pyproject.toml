@@ -1,0 +1,21 @@
+[project]
+name = "multiplayergame"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Aayansh-singh-24", email = "luciferversion2.2@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi[standard]>=0.162.4",
+    "pydantic-settings>=2.16.2",
+    "sqlalchemy[asyncio]>=2.1.8",
+]
+
+[project.scripts]
+multiplayergame = "multiplayergame:main"
+
+[build-system]
+requires = ["uv_build>=0.12.10,<0.13.0"]
+build-backend = "uv_build"
