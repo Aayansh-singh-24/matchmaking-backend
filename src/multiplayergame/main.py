@@ -11,6 +11,7 @@ async def lifespan(app: FastAPI):
 
     await mongo_db.command("ping")
     await _initilize_index()
+    
     try:
         yield
     finally:
