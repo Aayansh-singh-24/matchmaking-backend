@@ -5,7 +5,7 @@ from sqlalchemy.orm import declarative_base
 from pymongo import AsyncMongoClient
 
 # postgres connection Implementation
-engine = create_async_engine(setting.POSTGRES_DATABASE_URL, echo=False,)
+engine = create_async_engine(setting.POSTGRES_DATABASE_URL, echo=False)
 SessionLocal = async_sessionmaker(bind=engine, class_=AsyncSession, autocommit=False, autoflush=False)
 base = declarative_base()
 
@@ -20,10 +20,12 @@ async def get_postgres_db():
         finally:
             session.close()
 
+
 # mongodb connection Implementation
 mongo_client = AsyncMongoClient(setting.MONGODB_DATABASE_URL)
-mongo_db = mongo_client["multiplayer"]
+mongo_db = mongo_client["player-skills"]
 
 def get_mongo_db():
     return mongo_db
+
 
