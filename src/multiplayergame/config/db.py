@@ -1,8 +1,12 @@
+import logging
+
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker,create_async_engine
 from multiplayergame.config.setting import setting
 from sqlalchemy.orm import declarative_base
 
 from pymongo import AsyncMongoClient
+
+logger = logging.getLogger(__name__)
 
 # postgres connection Implementation
 engine = create_async_engine(setting.POSTGRES_DATABASE_URL, echo=False, connect_args={"timeout": 10})
@@ -15,6 +19,7 @@ async def get_postgres_db():
         try:
             yield session
         except Exception:
+            logger.exception("Database session failed; rolling back transaction")
             await session.rollback()
             raise
         finally:

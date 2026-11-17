@@ -1,6 +1,10 @@
+import logging
+
 from sqlalchemy import Column, Integer,String,DateTime, Boolean
 from multiplayergame.config.db import base, get_mongo_db
 from datetime import datetime, timezone
+
+logger = logging.getLogger(__name__)
 
 class Queue(base):
     __tablename__ = "matchmaking"
@@ -13,5 +17,12 @@ class Queue(base):
 
 
 async def _initilize_index() -> None:
+
     db = get_mongo_db()
-    await db.Queue.create_index("playerID", unique=True)
+    
+    try:
+        await db.Queue.create_index("playerID", unique=True)
+    except Exception:
+        logger.exception("Failed to create the MongoDB playerID index")
+        raise
+    logger.info("Ensured MongoDB playerID index exists")
