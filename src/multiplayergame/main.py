@@ -2,7 +2,7 @@ import logging
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from multiplayergame.config.db import base, engine, mongo_client, mongo_db
-from multiplayergame.queue_service.model import _initilize_index
+from multiplayergame.queue_service.router import router as queue_router
 
 logger = logging.getLogger(__name__)
 
@@ -18,8 +18,6 @@ async def lifespan(app: FastAPI):
 
         await mongo_db.command("ping")
         logger.info("MongoDB connection is ready")
-
-        await _initilize_index()
 
     except Exception:
         logger.exception("Application startup failed")
@@ -37,7 +35,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Authorized-server", lifespan=lifespan)
+app.include_router(queue_router)
 
 @app.get("/")
 def home():
-    return("Home page  of authorized-server")
+    return("Home page  of matchmaking service")

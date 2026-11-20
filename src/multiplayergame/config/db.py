@@ -23,7 +23,7 @@ async def get_postgres_db():
             await session.rollback()
             raise
         finally:
-            session.close()
+            await session.close()
 
 
 # mongodb connection Implementation
