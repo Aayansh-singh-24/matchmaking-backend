@@ -29,7 +29,6 @@ async def cancel(id:str, db:AsyncSession):
     player = playerTicket(playerId=id,db=db)
     try:
         await player.delete()
-
     except LookupError:
         raise HTTPException(status_code=404, detail="Queue ticket not found.")
     

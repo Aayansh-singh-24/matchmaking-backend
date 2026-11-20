@@ -12,5 +12,5 @@ async def create_ticket(body: ticketSchema, db: AsyncSession = Depends(get_postg
     return await controller.create(body, db)
 
 @router.delete("/cancel/{playerID}")
-async def cnacel_joining(db:AsyncSession)->None:
-    controller.cancel(id,db)
+async def cnacel_joining(id:str, db:AsyncSession = Depends(get_postgres_db))->None:
+    return await controller.cancel(id,db)
