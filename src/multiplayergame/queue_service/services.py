@@ -10,7 +10,7 @@ from multiplayergame.queue_service.model import Queue
 logger = logging.getLogger(__name__)
 
 class playerTicket:
-    def __init__(self, playerId:str , db:AsyncSession):
+    def __init__(self, playerId:str|None , db:AsyncSession):
         self.playerId  = playerId
         self.db = db
 
@@ -56,3 +56,7 @@ class playerTicket:
             raise
 
         logger.info("Ticket of %s delete successfully",self.playerId)
+
+    async def get_all_tickets(self) -> list[Queue]:
+        result = await self.db.execute(select(Queue))
+        return list(result.scalars().all())

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 # postgres connection Implementation
 engine = create_async_engine(setting.POSTGRES_DATABASE_URL, echo=False, connect_args={"timeout": 10})
-SessionLocal = async_sessionmaker(bind=engine, class_=AsyncSession, autocommit=False, autoflush=False)
+SessionLocal = async_sessionmaker(bind=engine, class_=AsyncSession, autocommit=False, autoflush=False, expire_on_commit=False)
 base = declarative_base()
 
 

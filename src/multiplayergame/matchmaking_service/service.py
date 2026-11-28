@@ -16,6 +16,7 @@ class Match:
         self.db = db
         self.ticket: Sequence[Queue] = ()
 
+
     async def fetch_ticket(self) -> Sequence[Queue]:
         result = await self.db.execute(
             select(Queue)
@@ -27,17 +28,22 @@ class Match:
         self.ticket = result.scalars().all()
         return self.ticket
 
+
     def is_two_player_exist(self, ticket: Sequence[Queue] | None = None) -> bool:
         """Return whether this ticket contains the two players needed for a match."""
         return len(self.ticket if ticket is None else ticket) >= 2
 
+
     async def create(self) -> Sequence[Queue] | None:
+
         """Return and claim the oldest pair, or None until two players are queued."""
+
         try:
             await self.fetch_ticket()
             if not self.is_two_player_exist():
-                await self.db.rollback()
-                logger.info("Matchmaking needs two waiting players; found %d", len(self.ticket))
+                count:int = len(self.ticket)
+                await self.db.rollback() # use to release the skip_lock 
+                logger.info("Matchmaking needs two waiting players; found %d", count)
                 return None
 
             for player in self.ticket:
@@ -53,3 +59,5 @@ class Match:
             await self.db.rollback()
             logger.exception("Failed to create a matchmaking pair")
             raise
+
+    

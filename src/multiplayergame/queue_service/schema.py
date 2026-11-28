@@ -10,3 +10,8 @@ class ticketCreateResponseSchema(BaseModel):
     playerID: str
     joinAT: datetime
     matching_status: str
+
+
+class ticketDetailsSchema(BaseModel):
+    ticketId: str
+    playerId: str

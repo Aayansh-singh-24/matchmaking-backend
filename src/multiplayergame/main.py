@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Starting Authorized-server")
+    logger.info("Starting Match-Making Server")
     try:
         async with engine.begin() as connection:
             await connection.run_sync(base.metadata.create_all)
